@@ -1,103 +1,126 @@
 # MyYouTube
 A fully responsive, feature-rich YouTube clone built to replicate the core video streaming experience. Key features include dynamic video playback, responsive user interface layouts, seamlessly integrated search capabilities, and optimized content discovery modules. Proudly deployed on Vercel and ready for community exploration!
 
-# 📺 YouTube Clone
+Here is the complete, raw markdown code for your updated `README.md` file. You can copy this block directly and replace the contents of your existing `README.md`:
 
-[![Framework: React / Next.js](https://img.shields.io/badge/Frontend-Modern_Web_Tech-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
+```markdown
+# 📺 YouTube Clone App
+
+[![Framework: React / Vite](https://img.shields.io/badge/Frontend-React_19_&_Vite_6-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
 [![Deployment: Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
 
-A fully responsive, feature-rich video streaming platform engineered to replicate the core UX/UI and technical mechanics of YouTube. This application delivers high-performance content delivery, dynamic video playback, and a modular architecture optimized for seamless cross-device exploration.
+A high-fidelity YouTube clone application built to replicate the core layout and video streaming experiences. Featuring custom responsive navigation, category filters, interactive content configurations, and robust full-stack data modeling supporting user sessions and video interactions.
 
 🔗 **Live Demo:** [Launch Live Application](https://youtube-clone-kohl-xi.vercel.app)
 
+```
 ---
 
 ## 🚀 Key Features
 
-* **Dynamic Video Streaming Engine:** Fluid video playback interface equipped with customized user control layers and state management.
-* **Intelligent Content Search:** Client-side filtering and keyword search pipelines for targeted, instant content discovery.
-* **Fully Responsive Architecture:** Adaptable grid fluid systems tailored for mobile viewports, tablets, and ultra-wide desktop monitors.
-* **Optimized Discovery Modules:** Tailored sidebar navigation menus, interactive feed categories, and metadata-rich video layouts.
-* **Modern UI Accents:** Polished dark/light-themed design choices featuring semantic hover states and clean layout transitions.
+* **Responsive Layout:** A modern user interface fully optimized for mobile, tablet, and desktop viewports.
+* **Navigation & Content Filtering:** Interactive sidebar layouts along with quick top category chips for fluid content discovery.
+* **Full Authentication Flow:** Integrated cloud identity mapping matching user sessions using secure Firebase UIDs.
+* **State Management & Animations:** High-performance UI state handling accompanied by smooth animations powered by `motion`.
+* **Extensive Relational Data Model:** Backed by structured schemas managing users, channels, videos, playlists, interactions, and metrics.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend Core:** HTML5, CSS3, JavaScript (ES6+)
-* **UI Layouts:** Flexbox, Grid Systems, Modern CSS Frameworks
-* **Icons & Assets:** FontAwesome / Material Icons
-* **Hosting & CI/CD:** Vercel
+### Frontend Architecture
+* **Core Framework:** React 19, TypeScript
+* **Build System & Tooling:** Vite 6
+* **CSS Framework:** Tailwind CSS v4 (`@tailwindcss/vite`)
+* **Icons & Animation:** Lucide React, Framer Motion (`motion`)
+
+### Backend & Storage
+* **Server Runtime:** Express (executed via `tsx` development runner)
+* **Primary Cloud DB / Auth:** Firebase 12 & Google Cloud Firestore
+* **Local Cache Engine:** Better-SQLite3 (`database.db`)
 
 ---
 
-## 📂 Project Directory Structure
+## 📂 Data Model & Architecture
 
-```text
-├── public/              # Static digital assets, logos, and icons
-├── src/                 # Application core source code
-│   ├── components/      # Reusable UI elements (Navbar, Sidebar, VideoCard)
-│   ├── pages/           # View layouts (Home, Watch, SearchResults)
-│   ├── styles/          # Global styles and layout configurations
-│   ├── utils/           # Helper scripts and mock data modules
-│   ├── App.js           # Main application entry point
-│   └── index.js         # DOM rendering layer
-├── package.json         # Dependency manifest and scripts
-└── README.md            # Project documentation repository
+### 1. Cloud Firestore Collections Schema
+The application's cloud back-end maps structured documents using the following collections layout:
 
-```
+| Collection | Document ID Pattern | Key Fields | Description |
+| :--- | :--- | :--- | :--- |
+| **`users`** | `{userId}` | `uid`, `email`, `displayName`, `photoURL`, `createdAt` | Core profile records linking authenticated users. |
+| **`channels`** | `{channelId}` | `id`, `ownerUid`, `name`, `subscribersCount` | Dedicated creator channel metadata mappings. |
+| **`videos`** | `{videoId}` | `id`, `title`, `videoUrl`, `ownerUid`, `views`, `likesCount` | Individual video file resources and play metrics. |
+| **`comments`** | `{commentId}` | `id`, `videoId`, `userUid`, `text`, `createdAt` | Viewer feedback sequences tied directly to videos. |
+| **`likes`** | `{likeId}` | `videoId`, `userUid`, `createdAt` | Tracked interactive user reaction metrics. |
+| **`subscriptions`**| `{subscriptionId}` | `channelId`, `userUid`, `createdAt` | Links matching creator accounts to user profiles. |
+| **`playlists`** | `{playlistId}` | `id`, `userUid`, `title`, `visibility` | Aggregated custom public or private video folders. |
+| **`playlistItems`**| `{itemId}` | `id`, `playlistId`, `videoId`, `addedAt` | Categorized index listings nested within playlists. |
+
+### 2. Local Relational Schema (`SQLite`)
+For optimized lookups or hybrid edge performance, the offline data engine runs a dual-table layout:
+* **`users`:** Tracks `id` (Primary Key/Firebase UID), `email`, `display_name`, `photo_url`, `created_at`, and `last_login`.
+* **`user_profiles`:** A complementary profile lookup mapping explicit biographical extensions (`bio`, `location`, `website`) mapped securely via a Foreign Key cascade (`FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE`).
+
+### 3. Firestore Security Rules Policy
+* **Public Visibility:** Globally permits all unauthenticated read requests across core view data streams including `users`, `channels`, `videos`, `comments`, `likes`, and `subscriptions`.
+* **Resource Access Control:** Enforces strict execution bounds checking matching `request.auth.uid` validation parameters on all mutations (`create`, `update`, `delete`) to ensure documents can only be modified by their rightful owners.
+* **Schema Sanitization Rules:** Includes validation policies regulating user comments length constraints (`< 1000` chars), channel text properties limit checks (`< 100` chars), email formats verification, and strict atomic updates (`+1` / `-1`) on collection count counters.
+
 ---
 
-## 💻 Local Installation & Setup Guide
-
-Follow these steps to set up and run the project locally on your development machine.
+## 💻 Local Installation & Setup
 
 ### 1. Prerequisites
+Ensure you have **Node.js** (v20.0.0 or higher recommended) installed locally on your system.
 
-Ensure you have a modern web browser and a local development server runner (like Node.js or VS Code Live Server) configured.
-
-### 2. Clone the Repository
-
-Pull the latest codebase from GitHub to your local storage:
+### 2. Run Setup Steps
+Extract the repository setup components onto your environment workspace:
 
 ```bash
-git clone [https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME.git](https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME.git)
-cd YOUR_REPOSITORY_NAME
-
-```
-
-### 3. Install Dependencies (If package-managed)
-
-If your build environment utilizes Node modules, initialize your packages:
-
-```bash
+# Install package dependencies
 npm install
 
-```
-
-### 4. Fire Up the Development Environment
-
-Launch your local compiler or live server stream:
-
-```bash
-npm start
-# OR open index.html directly via Live Server
+# Initialize local environment variables
+cp .env.example .env # Create your own environment configuration file
 
 ```
 
-Open your local browser to `http://localhost:3000` to interact with the build.
+Ensure your `.env` parameters are accurately configured to connect your local runtime build to your live Firebase Cloud database platform:
+
+```env
+PROJECT_ID="gen-lang-client-0667749412"
+APP_ID="1:868100826178:web:6ae4755c2f230dacf9f9db"
+API_KEY="AIzaSyCkIke5ecAgFtBZcUA_i_ukYBIxfGw1nqw"
+AUTH_DOMAIN="gen-lang-client-0667749412.firebaseapp.com"
+FIRESTORE_DB_ID="ai-studio-65ddb87c-b282-4729-9378-ad29ad0aae92"
+STORAGE_BUCKET="gen-lang-client-0667749412.firebasestorage.app"
+MESSAGING_SENDER_ID="868100826178"
+
+```
+
+---
+
+## 🛠️ Available Core Scripts
+
+Inside your project pipeline, you can execute the following build instructions:
+
+* **`npm run dev`**: Launches your backend Express framework combined with the front-end Vite local server pipeline simultaneously.
+* **`npm run build`**: Compiles and minifies optimization builds ready for static output distributions.
+* **`npm run preview`**: Audits and provisions local browser previews over built workspace production assets.
+* **`npm run lint`**: Inspects standard program structures executing non-emit structural checks via the TypeScript compiler.
+* **`npm run clean`**: Cleans local workspace environments by purging structural target folders.
 
 ---
 
 ## 🌐 Deployment Configuration
 
-This platform is configured for instant deployment using the Vercel Edge Network.
+This workspace is fully optimized for instant distribution deployments on the Vercel Edge Framework:
 
-To push your own live iteration:
-
-1. Connect your GitHub account directly to the **Vercel Dashboard**.
-2. Import this specific repository.
-3. Keep default build settings unchanged and select **Deploy**.
+1. Link your personal account workspace to the **Vercel Dashboard**.
+2. Import the project workspace repository source folder.
+3. Verify project environmental variable configuration settings fields mirror your production credentials keys.
+4. Click **Deploy** to publish your application live!
 
 ---
 
