@@ -1,7 +1,6 @@
 # MyYouTube
 A fully responsive, feature-rich YouTube clone built to replicate the core video streaming experience. Key features include dynamic video playback, responsive user interface layouts, seamlessly integrated search capabilities, and optimized content discovery modules. Proudly deployed on Vercel and ready for community exploration!
 
-```markdown
 # 📺 YouTube Clone App
 
 [![Framework: React / Vite](https://img.shields.io/badge/Frontend-React_19_&_Vite_6-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
@@ -11,7 +10,6 @@ A high-fidelity YouTube clone application built to replicate the core layout and
 
 🔗 **Live Demo:** [Launch Live Application](https://youtube-clone-kohl-xi.vercel.app)
 
-```
 ---
 
 ## 🚀 Key Features
