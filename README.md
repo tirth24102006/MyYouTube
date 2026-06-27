@@ -45,56 +45,7 @@ A fully responsive, feature-rich video streaming platform engineered to replicat
 ├── package.json         # Dependency manifest and scripts
 └── README.md            # Project documentation repository
 
-
-Here is a comprehensive, production-ready, and visually stunning `README.md` file for your GitHub repository. It includes badge elements, a clean project structure, a detailed installation guide, and structured feature breakdowns to make your project stand out.
-
-```markdown
-# 📺 YouTube Clone
-
-[![Framework: React / Next.js](https://img.shields.io/badge/Frontend-Modern_Web_Tech-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
-[![Deployment: Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
-
-A fully responsive, feature-rich video streaming platform engineered to replicate the core UX/UI and technical mechanics of YouTube. This application delivers high-performance content delivery, dynamic video playback, and a modular architecture optimized for seamless cross-device exploration.
-
-🔗 **Live Demo:** [Launch Live Application](https://youtube-clone-kohl-xi.vercel.app)
-
----
-
-## 🚀 Key Features
-
-* **Dynamic Video Streaming Engine:** Fluid video playback interface equipped with customized user control layers and state management.
-* **Intelligent Content Search:** Client-side filtering and keyword search pipelines for targeted, instant content discovery.
-* **Fully Responsive Architecture:** Adaptable grid fluid systems tailored for mobile viewports, tablets, and ultra-wide desktop monitors.
-* **Optimized Discovery Modules:** Tailored sidebar navigation menus, interactive feed categories, and metadata-rich video layouts.
-* **Modern UI Accents:** Polished dark/light-themed design choices featuring semantic hover states and clean layout transitions.
-
----
-
-## 🛠️ Tech Stack
-
-* **Frontend Core:** HTML5, CSS3, JavaScript (ES6+)
-* **UI Layouts:** Flexbox, Grid Systems, Modern CSS Frameworks
-* **Icons & Assets:** FontAwesome / Material Icons
-* **Hosting & CI/CD:** Vercel
-
----
-
-## 📂 Project Directory Structure
-
-```text
-├── public/              # Static digital assets, logos, and icons
-├── src/                 # Application core source code
-│   ├── components/      # Reusable UI elements (Navbar, Sidebar, VideoCard)
-│   ├── pages/           # View layouts (Home, Watch, SearchResults)
-│   ├── styles/          # Global styles and layout configurations
-│   ├── utils/           # Helper scripts and mock data modules
-│   ├── App.js           # Main application entry point
-│   └── index.js         # DOM rendering layer
-├── package.json         # Dependency manifest and scripts
-└── README.md            # Project documentation repository
-
 ```
-
 ---
 
 ## 💻 Local Installation & Setup Guide
@@ -157,7 +108,3 @@ Distributed under the MIT License. See `LICENSE` for further operational permiss
 ---
 
 ⭐ *If you find this project resourceful or educational, feel free to give it a star!*
-
-```
-
-```
