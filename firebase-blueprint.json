@@ -1,0 +1,153 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "channels": {
+      "title": "Channel",
+      "description": "YouTube channel information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "bannerUrl": { "type": "string" },
+        "subscribersCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "ownerUid", "name"]
+    },
+    "videos": {
+      "title": "Video",
+      "description": "Video metadata",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "channelName": { "type": "string" },
+        "channelAvatarUrl": { "type": "string" },
+        "views": { "type": "number" },
+        "likesCount": { "type": "number" },
+        "postedAt": { "type": "string" },
+        "duration": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "channelDescription": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "title", "videoUrl", "ownerUid"]
+    },
+    "comments": {
+      "title": "Comment",
+      "description": "Video comments",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "videoId": { "type": "string" },
+        "userUid": { "type": "string" },
+        "userName": { "type": "string" },
+        "userAvatarUrl": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "videoId", "userUid", "text"]
+    },
+    "likes": {
+      "title": "Like",
+      "description": "Video likes",
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string" },
+        "userUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["videoId", "userUid"]
+    },
+    "subscriptions": {
+      "title": "Subscription",
+      "description": "Channel subscriptions",
+      "type": "object",
+      "properties": {
+        "channelId": { "type": "string" },
+        "userUid": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["channelId", "userUid"]
+    },
+    "playlists": {
+      "title": "Playlist",
+      "description": "User created playlists",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userUid": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "visibility": { "type": "string", "enum": ["public", "private"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userUid", "title"]
+    },
+    "playlistItems": {
+      "title": "PlaylistItem",
+      "description": "Videos within a playlist",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "playlistId": { "type": "string" },
+        "videoId": { "type": "string" },
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "playlistId", "videoId"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "users",
+      "description": "User profile documents"
+    },
+    "channels/{channelId}": {
+      "schema": "channels",
+      "description": "Channel information documents"
+    },
+    "videos/{videoId}": {
+      "schema": "videos",
+      "description": "Video metadata documents"
+    },
+    "comments/{commentId}": {
+      "schema": "comments",
+      "description": "Video comments"
+    },
+    "likes/{likeId}": {
+      "schema": "likes",
+      "description": "Video likes"
+    },
+    "subscriptions/{subscriptionId}": {
+      "schema": "subscriptions",
+      "description": "Channel subscriptions"
+    },
+    "playlists/{playlistId}": {
+      "schema": "playlists",
+      "description": "User playlists"
+    },
+    "playlistItems/{itemId}": {
+      "schema": "playlistItems",
+      "description": "Videos in playlists"
+    }
+  }
+}

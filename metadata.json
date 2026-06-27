@@ -1,0 +1,5 @@
+{
+  "name": "YouTube Clone",
+  "description": "A high-fidelity YouTube clone with a responsive layout, sidebar navigation, category filtering, and a video grid.",
+  "requestFramePermissions": []
+}

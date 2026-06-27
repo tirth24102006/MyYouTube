@@ -1,0 +1,203 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - uid: string (required)
+    //   - displayName: string
+    //   - email: string (required)
+    //   - photoURL: string
+    //   - createdAt: timestamp
+    //
+    // Collection: channels
+    // Document ID: {channelId}
+    // Fields:
+    //   - id: string (required)
+    //   - ownerUid: string (required)
+    //   - name: string (required)
+    //   - description: string
+    //   - avatarUrl: string
+    //   - bannerUrl: string
+    //   - subscribersCount: number
+    //   - createdAt: timestamp
+    //
+    // ===============================================================
+
+    // Collection: videos
+    // Document ID: {videoId}
+    // Fields:
+    //   - id: string (required)
+    //   - title: string (required)
+    //   - videoUrl: string (required)
+    //   - ownerUid: string (required)
+    //   - createdAt: timestamp
+    //
+    // Collection: comments
+    // Document ID: {commentId}
+    // Fields:
+    //   - id: string (required)
+    //   - videoId: string (required)
+    //   - userUid: string (required)
+    //   - userName: string
+    //   - userAvatarUrl: string
+    //   - text: string (required)
+    //   - createdAt: timestamp
+    //
+    // Collection: likes
+    // Document ID: {likeId} (videoId_userUid)
+    // Fields:
+    //   - videoId: string (required)
+    //   - userUid: string (required)
+    //   - createdAt: timestamp
+    //
+    // Collection: subscriptions
+    // Document ID: {subscriptionId} (channelId_userUid)
+    // Fields:
+    //   - channelId: string (required)
+    //   - userUid: string (required)
+    //   - createdAt: timestamp
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "tirthandhariya24@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email']) &&
+             data.uid is string && data.uid.size() > 0 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidChannel(data) {
+      return data.keys().hasAll(['id', 'ownerUid', 'name']) &&
+             data.id is string && data.id.size() > 0 &&
+             data.ownerUid is string && data.ownerUid == request.auth.uid &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100;
+    }
+
+    function isValidVideo(data) {
+      return data.keys().hasAll(['id', 'title', 'videoUrl', 'ownerUid']) &&
+             data.id is string && data.id.size() > 0 &&
+             data.title is string && data.title.size() > 0 &&
+             data.videoUrl is string && data.videoUrl.size() > 0 &&
+             data.ownerUid is string && data.ownerUid == request.auth.uid;
+    }
+
+    function isValidComment(data) {
+      return data.keys().hasAll(['id', 'videoId', 'userUid', 'text']) &&
+             data.id is string && data.id.size() > 0 &&
+             data.videoId is string && data.videoId.size() > 0 &&
+             data.userUid is string && data.userUid == request.auth.uid &&
+             data.text is string && data.text.size() > 0 && data.text.size() < 1000;
+    }
+
+    function isValidLike(data) {
+      return data.keys().hasAll(['videoId', 'userUid']) &&
+             data.videoId is string && data.videoId.size() > 0 &&
+             data.userUid is string && data.userUid == request.auth.uid;
+    }
+
+    function isValidSubscription(data) {
+      return data.keys().hasAll(['channelId', 'userUid']) &&
+             data.channelId is string && data.channelId.size() > 0 &&
+             data.userUid is string && data.userUid == request.auth.uid;
+    }
+
+    function isValidPlaylist(data) {
+      return data.keys().hasAll(['id', 'userUid', 'title']) &&
+             data.id is string && data.id.size() > 0 &&
+             data.userUid is string && data.userUid == request.auth.uid &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 100 &&
+             (!('visibility' in data) || data.visibility in ['public', 'private']);
+    }
+
+    function isValidPlaylistItem(data) {
+      return data.keys().hasAll(['id', 'playlistId', 'videoId']) &&
+             data.id is string && data.id.size() > 0 &&
+             data.playlistId is string && data.playlistId.size() > 0 &&
+             data.videoId is string && data.videoId.size() > 0;
+    }
+
+    function isValidCounterUpdate(affectedKeys, fieldName) {
+      return affectedKeys.hasOnly([fieldName]) &&
+             math.abs(request.resource.data[fieldName] - resource.data[fieldName]) == 1;
+    }
+
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isOwner(userId) || isAdmin();
+    }
+
+    match /channels/{channelId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidChannel(request.resource.data);
+      allow update: if isAuthenticated() && (
+        (request.auth.uid == resource.data.ownerUid && isValidChannel(request.resource.data)) ||
+        isValidCounterUpdate(request.resource.data.diff(resource.data).affectedKeys(), 'subscribersCount')
+      );
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.ownerUid || isAdmin());
+    }
+
+    match /videos/{videoId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidVideo(request.resource.data);
+      allow update: if isAuthenticated() && (
+        (request.auth.uid == resource.data.ownerUid && isValidVideo(request.resource.data)) ||
+        isValidCounterUpdate(request.resource.data.diff(resource.data).affectedKeys(), 'likesCount') ||
+        isValidCounterUpdate(request.resource.data.diff(resource.data).affectedKeys(), 'views')
+      );
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.ownerUid || isAdmin());
+    }
+
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidComment(request.resource.data);
+      allow update: if isAuthenticated() && (request.auth.uid == resource.data.userUid) && isValidComment(request.resource.data);
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.userUid || isAdmin());
+    }
+
+    match /likes/{likeId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidLike(request.resource.data);
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.userUid || isAdmin());
+    }
+
+    match /subscriptions/{subscriptionId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && isValidSubscription(request.resource.data);
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.userUid || isAdmin());
+    }
+
+    match /playlists/{playlistId} {
+      allow read: if resource.data.visibility == 'public' || (isAuthenticated() && request.auth.uid == resource.data.userUid);
+      allow create: if isAuthenticated() && isValidPlaylist(request.resource.data);
+      allow update: if isAuthenticated() && request.auth.uid == resource.data.userUid && isValidPlaylist(request.resource.data);
+      allow delete: if isAuthenticated() && (request.auth.uid == resource.data.userUid || isAdmin());
+    }
+
+    match /playlistItems/{itemId} {
+      allow read: if true; // Access controlled by playlist visibility in practice
+      allow create: if isAuthenticated() && isValidPlaylistItem(request.resource.data);
+      allow delete: if isAuthenticated() && (
+        request.auth.uid == get(/databases/$(database)/documents/playlists/$(resource.data.playlistId)).data.userUid || 
+        isAdmin()
+      );
+    }
+  }
+}
