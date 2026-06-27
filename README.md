@@ -1,8 +1,6 @@
 # MyYouTube
 A fully responsive, feature-rich YouTube clone built to replicate the core video streaming experience. Key features include dynamic video playback, responsive user interface layouts, seamlessly integrated search capabilities, and optimized content discovery modules. Proudly deployed on Vercel and ready for community exploration!
 
-Here is the complete, raw markdown code for your updated `README.md` file. You can copy this block directly and replace the contents of your existing `README.md`:
-
 ```markdown
 # 📺 YouTube Clone App
 
@@ -126,7 +124,7 @@ This workspace is fully optimized for instant distribution deployments on the Ve
 
 ## 📄 License & Open Source
 
-Distributed under the MIT License. See `LICENSE` for further operational permissions.
+Distributed under the MIT License provisions parameters. See standard licensing documentation for open-source usages.
 
 ---
 
