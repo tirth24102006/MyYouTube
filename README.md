@@ -119,7 +119,8 @@ This workspace is fully optimized for instant distribution deployments on the Ve
 4. Click **Deploy** to publish your application live!
 
 ---
-🚧 Work in Progress
+## 🚧 Work in Progress
+
 This project is currently under active development and is updated regularly. It is not yet complete, but the source code is open for anyone. If you would like to build upon or improve this half-built version, feel free to download the code and contribute!
 
 ---
@@ -131,4 +132,3 @@ Distributed under the MIT License provisions parameters. See standard licensing 
 ---
 
 ⭐ *If you find this project resourceful or educational, feel free to give it a star!*
-
