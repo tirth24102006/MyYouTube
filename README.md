@@ -10,7 +10,7 @@ A high-fidelity YouTube clone application built to replicate the core layout and
 
 🔗 **Live Demo:** [Launch Live Application](https://youtube-clone-kohl-xi.vercel.app)
 
----
+--- 
 
 ## 🚀 Key Features
 
