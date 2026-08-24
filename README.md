@@ -3,7 +3,7 @@ A fully responsive, feature-rich YouTube clone built to replicate the core video
  
 # 📺 YouTube Clone App
 
-[![Framework: React / Vite](https://img.shields.io/badge/Frontend-React_19_&_Vite_6-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
+[![Framework: React / Vite](https://img.shields.io/badge/Frontend-React_19_&_Vite_6-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app) 
 [![Deployment: Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://youtube-clone-kohl-xi.vercel.app)
 
 A high-fidelity YouTube clone application built to replicate the core layout and video streaming experiences. Featuring custom responsive navigation, category filters, interactive content configurations, and robust full-stack data modeling supporting user sessions and video interactions.
